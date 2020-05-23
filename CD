@@ -12,3 +12,4 @@ solve.CD <- function(A){
   }
   return(L)  
 }
+ 
