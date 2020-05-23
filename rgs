@@ -1,0 +1,21 @@
+# Regular Gram_Schmidt qr decomposition
+
+rgs <- function(X)
+{
+  n <- nrow(X)
+  p <- ncol(X)
+  Q <- matrix(0, n, p)
+  R <- matrix(0, p, p)
+  
+  R[1,1] <- sqrt(sum(X[,1]^2))
+  Q[,1] <- X[,1]/R[1,1] 
+  
+  for (i in 2:p) {
+    R[1:(i-1),i] <- crossprod(Q[,1:(i-1)], X[,i]) 
+    temp <- X[,i] - t(R[1:(i-1),i] * t(Q[,1:(i-1)])) %*% rep(1, (i-1))
+    R[i,i] <- sqrt(sum(temp^2))
+    Q[,i] <- temp / R[i,i]
+  }
+  obj <- list(Q = Q, R = R)
+  return(obj)
+}
