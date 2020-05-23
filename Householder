@@ -1,0 +1,48 @@
+# Householder Transformation
+Householder <- function(x) 
+{
+  s2 <- c(crossprod(x, x))
+  s <- sign(x[1]) * sqrt(s2)
+  d <- 1 / (s2 + s * x[1])
+  u <- x
+  u[1] <- x[1] + s
+  U <- diag(length(x)) - outer(d * u, u)
+  list(U = U, u = u)
+}
+
+
+# Application to Regression
+HouseReg <- function(X, y) {
+  p <- ncol(X)
+  n <- nrow(X)
+  Xy <- cbind(X, y)
+  
+  u <- as.list(1:p)
+  
+  # initial
+  temp.hh <- Householder(X[,1])
+  U <- temp.hh$U
+  u[[1]] <- temp.hh$u
+  
+  
+  for (i in 2:p) {
+    x <- (U %*% X)[i:n,i]
+    temp.hh <- Householder(x)
+    u[[i]] <- temp.hh$u
+    temp.U <- temp.hh$U
+    temp.I <- diag(i-1)
+    temp.01 <- matrix(0, i-1, n - i +1)
+    temp.02 <- matrix(0, n - i + 1, i-1)
+    U <- rbind(cbind(temp.I, temp.01), cbind(temp.02, temp.U)) %*% U
+  }
+  temp <- U %*% Xy
+  R <- temp[1:p,1:p]
+  z1 <- temp[1:p,p+1]
+  z2 <- temp[-(1:p),p+1]
+  
+  obj <- list(U = U, R = R, z = c(z1, z2), z1 = z1, z2 = z2, u = u)
+}
+
+
+
+
