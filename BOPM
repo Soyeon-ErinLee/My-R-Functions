@@ -11,3 +11,4 @@ build_stock_tree <- function(S, sigma, delta_t, N) {
   return(btree)
 }
 
+ 
