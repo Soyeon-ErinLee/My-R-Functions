@@ -1,0 +1,14 @@
+# Cholesky Decomposition
+
+solve.CD <- function(A){
+  n=nrow(A)
+  L = diag(n)
+  L[1,1] = sqrt(A[1,1])
+  for (k in 2:n){
+    a = A[1:(k-1),k]
+    l = forwardsolve(L[1:(k-1),1:(k-1)],a)
+    L[k,1:(k-1)] = t(l)
+    L[k,k] = sqrt(A[k,k] - t(l)%*%l)
+  }
+  return(L)  
+}
