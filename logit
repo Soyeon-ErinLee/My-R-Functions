@@ -1,0 +1,25 @@
+# Logistic Regression beta estimator
+
+my.logit <- function(X, y, init = NULL, max.iter = 100, eps = 1.0e-5)
+{
+  if (is.null(init)) init <- rep(0, ncol(X))
+  beta <- init
+  for (iter in 1:max.iter)
+  {
+    
+    eta <- X %*% beta
+    p <- exp(eta)/ (1 + exp(eta))
+    w <- c(p * (1 - p))
+    z <- X %*% beta + (y-p)/w
+    
+    tilde.X <- X * sqrt(w)
+    tilde.z <- z * sqrt(w)
+    qr.obj <- qr(tilde.X)
+    new.beta <- backsolve(qr.obj$qr, qr.qty(qr.obj, tilde.z))
+    
+    if (max(new.beta - beta) < eps) break
+    beta <- new.beta
+  }
+  if (iter == max.iter) warning("Algorithm may not be converged!")
+  obj <- list(est = c(beta), iterations = iter)
+}
