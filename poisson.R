@@ -21,3 +21,4 @@ my.poisson <- function(X, y, init = rep(1, ncol(X)), maxiter = 100, eps = 1.0e-8
 }
 
  
+ 
