@@ -19,3 +19,4 @@ rgs <- function(X)
   obj <- list(Q = Q, R = R)
   return(obj)
 }
+ 
