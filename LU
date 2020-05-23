@@ -1,0 +1,37 @@
+# LU decomposition
+
+# My function for Solving a system of linear equations via LU.
+solve.LU <- function(A, b) {
+   n <- nrow(A)
+   B <- diag(n); L <- diag(n); P <- diag(n)
+   tempA <- A
+  for (i in 1:(n-1))  {
+    I <- diag(n); M <- diag(n)
+    colmax = 0
+    p <- 1:n
+    for (k in i:n)  {
+      srow = abs(A[p[k],i])
+      ifelse(colmax<srow,((colmax<-srow) & (index<-k)),NA)
+    }
+    temp = p[i]
+    p[i] = index
+    p[index]= temp
+    I[i,]=I[index,]
+    I[index,]=diag(n)[i,]
+    P = I %*% P
+    M[(i+1):n,i] <- -((I%*%A)[(i+1):n,i])/(I%*%A)[i,i]
+    B <- M %*% I %*% B
+    A <- M %*% I %*% A
+    L[(i+1):n,i] = -M[(i+1):n,i]
+    if (i!=1){
+    for (j in 1:(i-1)) {
+      L[,j] = (I%*%L)[,j]
+       }
+    }
+  }
+   U <- B %*% tempA
+   x <- backsolve(U, B%*%b)
+  obj <- list(x = x, L = L, U = U, P = P)
+  return(obj)
+}
+
