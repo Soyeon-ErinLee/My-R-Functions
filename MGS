@@ -1,0 +1,24 @@
+# Modified Gram Schmidt Algorithm
+
+ModiGS <- function(X) {
+  p = ncol(X)
+  R = diag(p)
+  Q = X
+  R[1,1] = sqrt(sum(X[,1]^2))
+  Q[,1] = X[,1]/R[1,1]
+  for (i in 2:p){
+    for (j in 1:(i-1)){
+      R[j,i] = t(Q[,j])%*%X[,i]
+      X[,i] = X[,i] - R[j,i]%*%Q[,j]
+    }
+    R[i,i] = apply(X, 2, function(x){sqrt(sum(x^2))})[i]
+    Q[,i] = X[,i]/R[i,i]
+  }
+  list(Q = Q, R = R)
+}
+
+
+X <- outer(1:6, 0:3, "^")
+ModiGS(X)
+
+is.logical(ModiGS(X)$Q%*%ModiGS(X)$R==X)
