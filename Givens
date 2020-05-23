@@ -1,0 +1,18 @@
+# Givens Transformation algorithm
+
+Givens <- function(X,y){
+  n = nrow(X)
+  p = ncol(X)
+  U = diag(n)
+  for (j in 2:n){
+    for (i in 1:min(j-1,p)){
+      Utemp = diag(n)
+      s = sqrt(sum(X[i,i]^2,X[j,i]^2))
+      Utemp[c(i,j),c(i,j)] = matrix(c(X[i,i],-X[j,i],X[j,i],X[i,i]),c(2,2))/s
+      X = Utemp %*% X
+      U = Utemp %*% U
+    }
+  }
+  z = U%*%y
+  list(U = U, R = X[1:p, 1:p], Q = t(U), z1 = z[1:p,], z2 = z[-(1:p),])
+}
