@@ -1,13 +1,13 @@
-
 # Binomial Option Pricing Model
+
 build_stock_tree <- function(S, sigma, delta_t, N) {
-  tree = matrix(0, nrow=N+1, ncol=N+1)
+  btree = matrix(0, nrow=N+1, ncol=N+1)
   U = exp(sigma*sqrt(delta_t))
   D = exp(-sigma*sqrt(delta_t))
   for (i in 1:(N+1)) {
     for (j in 1:i) {
-      tree[i, j] = S * U^(j-1) * D^((i-1)-(j-1))
+      btree[i, j] = S*U^(j-1) * D^((i-1)-(j-1))
     }  }
-  return(tree)
+  return(btree)
 }
 
