@@ -20,3 +20,4 @@ rgs <- function(X)
   return(obj)
 }
  
+ 
