@@ -1,3 +1,3 @@
 # my_analysis
-Some codes for personal data analysis
-Mannual R functions
+Some codes for personal usage
+- Mannual R functions
