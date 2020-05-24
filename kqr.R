@@ -1,3 +1,5 @@
+# Kernel Quadratic Regression
+
 library(kernlab) 
 my_kqr <- function(x,y,n,C = 1,tau){
     H <- x %*% t(x)
