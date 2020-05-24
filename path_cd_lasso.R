@@ -1,9 +1,11 @@
+# Soft-Tresholding function
 S <- function(z, lambda) {
   (z - lambda) * (z > lambda) + 
     (z + lambda) * (z < -lambda) + 
     0 * (abs(z) <= lambda)
 }
 
+# Coordinate decent algorithm for LASSO
 cd.lasso <- function(x, y, lambda) 
 {
   z <- scale(x)
@@ -32,7 +34,7 @@ cd.lasso <- function(x, y, lambda)
 }
 
 
-
+# Pathwise Coordinate decent algorithm for LASSO
 pathcd.lasso <- function(x, y, x.test, y.test, grid = 100)
 {
   n <- length(y)
