@@ -1,3 +1,5 @@
+# Monte Carlo Markov Chain Cauchy Using Metropolis Hastings Algorithm
+
 set.seed(1)
 n.sim <- 100000
 X <- c(rt(1,1)) # t-distribution becomes Cauchy distribution when df=1
