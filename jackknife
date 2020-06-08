@@ -1,0 +1,13 @@
+# Jackknife bias-corrected estimator
+
+n.sim <- 500
+n <- 30
+theta <- theta.jk <- NULL
+for (iter in 1:n.sim)
+{
+  u <- runif(n) 
+  theta[iter] <-  max(u)
+  theta.i <- NULL
+  for (i in 1:n) theta.i[i] <- max(u[-i])
+  theta.jk[iter] <- theta[iter] - (n-1) * (mean(theta.i) - theta[iter])
+}
