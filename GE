@@ -1,0 +1,24 @@
+# Using Gaussian Elimination instead of solve()
+
+gesolver <- function(A,b) {
+  Aorig <- A
+  B <- diag(n)
+  for (k in 1:(n-1))  {
+    M <- diag(n)
+    M[(k+1):n,k] <- -A[(k+1):n,k]/A[k,k]     
+    A <- M %*% A  
+    B <- M %*% B  
+  }
+  x <- backsolve(B %*% Aorig, B %*% b)
+  return(x)
+}
+
+
+set.seed(2)
+n <- 5
+A <- matrix(rnorm(n^2), n, n)
+b <- matrix(rnorm(n), n, 1)
+
+x1 <- solve(A, b)
+x2 <- gesolver(A, b)
+print(cbind(x1, x2)) # same, but x2 is faster
