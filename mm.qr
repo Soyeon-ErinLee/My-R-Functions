@@ -1,0 +1,29 @@
+# Simple Linear Quantile Regression Based on MM algorithm
+
+mm.qr <- function(x, y, tau = 0.50, max.iter = 100, eps = 1.0e-8){
+  n <- length(x)
+  beta <- alpha <- 0
+  iter <- 1
+  for (iter in 1:max.iter){
+    w <- 1 / abs(y - alpha - beta * x)
+    wxy <- apply(cbind(w,x,y),1,prod)
+    r <- (2*tau-1)*(sum(x)*sum(w)-n*crossprod(w,x))
+    temp1 <- sum(wxy)*sum(w)-c(crossprod(w,x)*crossprod(w,y))+r
+    temp2 <- c(crossprod(x^2,w)*sum(w)-crossprod(x,w)^2)
+    beta.new <- as.vector(temp1/temp2)
+    if (max(abs(beta.new - beta)) < eps){
+      break}
+    beta <- beta.new
+    temp3 <- crossprod(w,y)+n*(2*tau-1)-beta*crossprod(w,x)
+    alpha <- as.vector(temp3/sum(w))
+  }
+  est <- c(alpha, beta=beta.new)
+  return(est)
+}
+
+
+# Comparison with R function rq
+library(quantreg)
+data(mtcars)
+rqfit <- rq(mpg ~ cyl,data = mtcars)
+cbind(rqfit$coefficients,mm.qr(mtcars$cyl,mtcars$mpg))
