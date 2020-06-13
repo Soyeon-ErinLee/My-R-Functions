@@ -27,3 +27,4 @@ library(quantreg)
 data(mtcars)
 rqfit <- rq(mpg ~ cyl,data = mtcars)
 cbind(rqfit$coefficients,mm.qr(mtcars$cyl,mtcars$mpg))
+ 
