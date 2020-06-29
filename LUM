@@ -1,0 +1,27 @@
+# Large-Margin Unified Machines
+
+lum <- function(x, y, a = 1, c = 1, lambda = 1, max.iter=100, eps = 1.0e-8){
+  # x: predictor
+  # y: binary response with {-1, 1} coding
+  # a, c: constants in LUM loss
+  # lambda: regularization pamameter
+  
+  V <- function(u, a = 1, c = 1){
+    ifelse(u<c/(1+c),(1-u),(1/(1+c))*(a/((1+c)*u-c+a))^a)
+  }
+  
+  coef <- glm(y~x)$coefficient
+  alpha <- coef[1]; beta <- coef[2]
+  for(iter in 1:max.iter){
+    new.beta <- optimize(f= function(bet) 1/n*sum(V(y*(alpha+x*bet), a, c))+lambda/2*bet^2, 
+                         interval = c(-100, 100))$minimum
+    new.alpha <- optimize(f= function(alp) sum(V(y*(alp + x*new.beta), a, c)), 
+                          interval=c(-100, 100))$minimum
+    if(max(abs(c(new.alpha, new.beta)-c(alpha, beta))) < eps){
+      break}
+    beta <- new.beta
+    alpha <- new.alpha 
+  }
+  est <- c(alpha=new.alpha, beta=new.beta) # linear LUM estimator
+  return(est)
+}
