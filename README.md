@@ -1,5 +1,5 @@
 # my_function
-- Manual R functions for statistical machine learning
+- Manual R functions for statistical computation and machine learning
 
 (Updated @ 07/13/20) 
 
